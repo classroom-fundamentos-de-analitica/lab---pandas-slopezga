@@ -94,7 +94,7 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    return list(pd.Series(tbl1['_c4'].unique()).str.upper().sort_values())
 
 
 def pregunta_07():
