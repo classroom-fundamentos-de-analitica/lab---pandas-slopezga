@@ -110,7 +110,7 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+    return tbl0.groupby('_c1')['_c2'].sum()
 
 
 def pregunta_08():
@@ -128,7 +128,9 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+    res = tbl0.copy()
+    res["suma"] = res._c0 + res._c2
+    return res
 
 
 def pregunta_09():
@@ -146,7 +148,9 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    res = tbl0.copy()
+    res["year"] = res["_c3"].str[:4]
+    return res
 
 
 def pregunta_10():
@@ -163,7 +167,11 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    tb = tbl0
+    res = tb.groupby('_c1').agg({'_c2': lambda x: sorted(list(x))})
+    for i, row in res.iterrows():
+        row['_c2'] = ":".join([str(int) for int in row['_c2']])
+    return res
 
 
 def pregunta_11():
@@ -182,7 +190,14 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    tb = tbl1
+    res = tb.groupby('_c0').agg({'_c4': lambda x: sorted(list(x))})
+    
+    for index, row in res.iterrows():
+        row['_c4'] = ",".join([str(int) for int in row['_c4']])
+        
+    res.insert(0, '_c0', range(0, 40))
+    return res
 
 
 def pregunta_12():
@@ -200,7 +215,15 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    tl = tbl2
+    tl['_c5'] = tl['_c5a'] + ':' + tl['_c5b'].astype(str)
+    res = tl.groupby('_c0').agg({'_c5': lambda x: sorted(x)})
+    
+    for index, row in res.iterrows():
+        row['_c5'] = ",".join([str(int) for int in row['_c5']])
+        
+    res.insert(0, '_c0', range(0, 40))
+    return res
 
 
 def pregunta_13():
